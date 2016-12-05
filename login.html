@@ -70,6 +70,8 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- iCheck -->
 <script src="plugins/iCheck/icheck.min.js"></script>
+<script src="general.js"></script>
+
 <script>
 
 	function login(){
@@ -86,8 +88,20 @@
         url:'llamadasAjax.php',
         success: function (response) {
 			if(response.mensaje.length == 32){
-				alert("su token de sesión es :" + response.mensaje);
-				location.href = "index.html";
+				//alert("su token de sesión es :" + response.mensaje);								
+				pagina = "index.html";
+				nombres = "token,usuario";
+				pagina += "?";
+				nomVec = nombres.split(",");
+				for (i = 0; i < nomVec.length; i++) {
+					if (i == 0) {
+						pagina += nomVec[i] + "=" + response.mensaje+ "&";
+					} else {
+						pagina += nomVec[i] + "=" + usuario + "&";
+					}
+				}
+				pagina = pagina.substring(0, pagina.length - 1);								
+				location.href = pagina;				
 			}				
         },
         error: function (error) {
