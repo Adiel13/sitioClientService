@@ -184,28 +184,13 @@ desired effect
                   <small>Member since Nov. 2012</small>
                 </p>
               </li>
-              <!-- Menu Body -->
-              <li class="user-body">
-                <div class="row">
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
-                  </div>
-                  <div class="col-xs-4 text-center">
-                    <a href="#">Friends</a>
-                  </div>
-                </div>
-                <!-- /.row -->
-              </li>
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="#" class="btn btn-default btn-flat">Datos</a>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="#" class="btn btn-default btn-flat" onclick="cerrarSesion()">Cerrar Sesión</a>
                 </div>
               </li>
             </ul>
@@ -223,16 +208,6 @@ desired effect
 
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
-
-      <!-- Sidebar user panel (optional) -->
-      <div class="user-panel">
-        <div class="pull-left info">
-          <p>Nombre</p>
-          <!-- Status -->
-        </div>
-		        <div class="pull-left image">
-        </div>
-      </div>
 
       <!-- search form (Optional) -->
       <form action="#" method="get" class="sidebar-form">
@@ -578,6 +553,32 @@ desired effect
     });
 		}
 	});
+
+  function cerrarSesion(){
+
+    $.ajax({
+    type: "POST",
+    dataType : "json",
+    data : {
+      cerrarSesion: 1,
+      usuariosesion: usuario, 
+      tokensesion: token,
+      sistemasesion: 1
+    },
+        url:'llamadasAjax.php',
+        success: function (response) {
+      //alert(response.mensaje);
+      if(response.mensaje == 1){
+      }else{
+        location.href = "login.html";       
+      }
+        },
+        error: function (error) {
+      alert("mega fail");
+        },
+    });
+
+  }
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
