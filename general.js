@@ -24,5 +24,6 @@ function enviarInfo(pagina) {
 		}
 	}
 	pagina = pagina.substring(0, pagina.length - 1);
+	alert(pagina);
 	location.href = pagina;
 }
