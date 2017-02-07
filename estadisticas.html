@@ -106,9 +106,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
         <li><a id="horario" href=""><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
+<<<<<<< HEAD
         <li><a href="#"><i class="fa fa-bell"></i> <span>Motivos de no compra</span></a></li>
 		<li><a href="#"><i class="fa fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
 		<li><a href="#"><i class="fa fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
+=======
+        <li><a href="#"><i class="fa-bell"></i> <span>Motivos de no compra</span></a></li>
+		<li><a href="#"><i class="fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
+		<li><a href="#"><i class="fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
+>>>>>>> origin/master
       </ul>
         
       <!-- /.sidebar-menu -->
@@ -486,6 +492,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       hideHover: 'auto'
     });        
         
+<<<<<<< HEAD
     cargarVariables();		
     document.getElementById("estadisticas").href = "estadisticas.html?token="+ token + "&usuario="+usuario;
     document.getElementById("horario").href = "horariollegada.html?token="+ token + "&usuario="+usuario;
@@ -494,6 +501,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
     if(!token || !usuario){
         location.href = "login.html";				
     }else{
+=======
+		cargarVariables();		
+        document.getElementById("estadisticas").href = "estadisticas.html?token="+ token + "&usuario="+usuario;
+        document.getElementById("horario").href = "horariollegada.html?token="+ token + "&usuario="+usuario;
+        document.getElementById("logo").href = "index.html?token="+ token + "&usuario="+usuario;
+
+		if(!token || !usuario){
+			location.href = "login.html";				
+		}else{
+>>>>>>> origin/master
       $.ajax({
 		    type: "POST",
 		    dataType : "json",
