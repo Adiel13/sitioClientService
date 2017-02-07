@@ -87,14 +87,17 @@
 		},
         url:'llamadasAjax.php',
         success: function (response) {
-			if(response.mensaje.length == 32){
+            var obj = JSON.parse(response.mensaje);            
+
+			if(obj.token.length == 32 && obj.permisos[0].codigo == 1){
+                
 				pagina = "index.html";
 				nombres = "token,usuario";
 				pagina += "?";
 				nomVec = nombres.split(",");
 				for (i = 0; i < nomVec.length; i++) {
 					if (i == 0) {
-						pagina += nomVec[i] + "=" + response.mensaje+ "&";
+						pagina += nomVec[i] + "=" + obj.token+ "&";
 					} else {
 						pagina += nomVec[i] + "=" + usuario + "&";
 					}

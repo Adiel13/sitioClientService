@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
 <head>
   <meta charset="utf-8">
@@ -18,39 +14,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-        page. However, you can choose any other skin. Make sure you
-        apply the skin class to the body tag so the changes take effect.
-  -->
-  <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+  <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
 </head>
-<!--
-BODY TAG OPTIONS:
-=================
-Apply one or more of the following classes to get the
-desired effect
-|---------------------------------------------------------|
-| SKINS         | skin-blue                               |
-|               | skin-black                              |
-|               | skin-purple                             |
-|               | skin-yellow                             |
-|               | skin-red                                |
-|               | skin-green                              |
-|---------------------------------------------------------|
-|LAYOUT OPTIONS | fixed                                   |
-|               | layout-boxed                            |
-|               | layout-top-nav                          |
-|               | sidebar-collapse                        |
-|               | sidebar-mini                            |
-|---------------------------------------------------------|
--->
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -132,7 +98,7 @@ desired effect
       <ul class="sidebar-menu">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li ><a href="" onclick="enviarInfo(estadisticas.html)"><span>Estadísticas de ventas</span></a></li>
+        <li class="active"><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
         <li><a href="#"><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
         <li><a href="#"><i class="fa-bell"></i> <span>Motivos de no compra</span></a></li>
 		<li><a href="#"><i class="fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
@@ -168,7 +134,7 @@ desired effect
 
               <h3 class="profile-username text-center"><div id="nombreprincipal"></div></h3>
 
-              <p class="text-muted text-center">PUESTO</p>
+                <p class="text-muted text-center"><div id="puesto"></div></p>
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
@@ -435,6 +401,10 @@ desired effect
 	var usuario;
 	$(document).ready(function() {
 		cargarVariables();		
+        document.getElementById("estadisticas").href = "estadisticas.html?token="+ token + "&usuario="+usuario;
+        document.getElementById("horario").href = "horariollegada.html?token="+ token + "&usuario="+usuario;
+        document.getElementById("logo").href = "index.html?token="+ token + "&usuario="+usuario;
+        
 		if(!token || !usuario){
 			location.href = "login.html";				
 		}else{
@@ -456,7 +426,6 @@ desired effect
 			}
         },
         error: function (error) {
-			alert("mega fail");
         },
     });
 
@@ -468,19 +437,21 @@ desired effect
            usuariosesion: usuario
       },
       url:'llamadasAjax.php',
-      success: function (response) {
+      success: function (response) {          
         datos = JSON.parse(response.mensaje);        
         ingresarInfo("nombreprincipal", datos[0].nombre + " "+ datos[0].apellido);
         ingresarInfo("nombreSuperior", datos[0].nombre);
         ingresarInfo("nombreMenu",  datos[0].nombre  + " "+ datos[0].apellido);
+        ingresarInfo("puesto",  datos[0].descripcion);
+
         ingresarInfoFormulario("nombremodifica",  datos[0].nombre  + " "+ datos[0].apellido);
         ingresarInfoFormulario("telefonomodifica",  datos[0].telefono);
         ingresarInfoFormulario("celularmodifica",  datos[0].celular);
         ingresarInfoFormulario("correomodifica",  datos[0].correo);
         ingresarInfoFormulario("direccionmodifica",  datos[0].direccion);
+
       },
       error: function (error) {
-        alert("mega fail 2");
       },
     });
 
@@ -515,7 +486,6 @@ desired effect
       }
         },
         error: function (error) {
-         // alert("mega fail");
         },
     });
     location.href = "login.html";     

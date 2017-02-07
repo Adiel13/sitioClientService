@@ -104,13 +104,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <ul class="sidebar-menu">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
-        <li><a id="horario" href=""><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
+        <li><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
+        <li  class="active"><a id="horario" href=""><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
         <li><a href="#"><i class="fa fa-bell"></i> <span>Motivos de no compra</span></a></li>
 		<li><a href="#"><i class="fa fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
 		<li><a href="#"><i class="fa fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
       </ul>
-        
       <!-- /.sidebar-menu -->
     </section>
     <!-- /.sidebar -->
@@ -120,12 +119,12 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Estadísticas de Venta
+        Horario de llegada
         <small>Por Sucursal</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
-        <li><a href="#">Estadisticas</a></li>        
+        <li><a href="#">Horario de llegada</a></li>        
       </ol>
     </section>
 
@@ -134,16 +133,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="row">
         <div class="col-md-6">
         <div class="box box-primary">
-                <div class="form-group">
-                  <label>Sucursal:</label>
-                  <select class="form-control">
-                    <option>option 1</option>
-                    <option>option 2</option>
-                    <option>option 3</option>
-                    <option>option 4</option>
-                    <option>option 5</option>
-                  </select>
-                </div>
             <div class="box-header">
               <h3 class="box-title">Ver estadísticas por:</h3>
             </div>
@@ -184,9 +173,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
           </div>
                   <div class="col-md-6">
             <div class="box">
-                                    <div class="box box-success">
+            <div class="box box-success">
             <div class="box-header with-border">
-              <h3 class="box-title">Atención vs. Compra</h3>
+              <h3 class="box-title">Horario</h3>
 
               <div class="box-tools pull-right">
                 <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -202,47 +191,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
           </div>
         </div>
-        
-        <div class="row">
-        <div class="col-md-6">
-          <div class="box">
-            <div class="box box-danger">
-            <div class="box-header with-border">
-              <h3 class="box-title">Clientes atendidos</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body chart-responsive">
-              <div class="chart" id="sales-chart" style="height: 300px; position: relative;"></div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-          <div class="box">
-          <div class="box box-info">
-            <div class="box-header with-border">
-              <h3 class="box-title">Tiempo de atención</h3>
-
-              <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-              </div>
-            </div>
-            <div class="box-body chart-responsive">
-              <div class="chart" id="line-chart" style="height: 300px;"></div>
-            </div>
-            <!-- /.box-body -->
-          </div>
-            </div>
-          </div>
-        </div>    
+           
 
       <div class="row">
         <div class="col-md-12">
@@ -429,42 +378,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
         }
     );
-        
-    var donut = new Morris.Donut({
-      element: 'sales-chart',
-      resize: true,
-      colors: ["#3c8dbc", "#f56954", "#00a65a"],
-      data: [
-        {label: "Download Sales", value: 12},
-        {label: "In-Store Sales", value: 30},
-        {label: "Mail-Order Sales", value: 20}
-      ],
-      hideHover: 'auto'
-    });
-        
-
-    var line = new Morris.Line({
-      element: 'line-chart',
-      resize: true,
-      data: [
-        {y: '2011 Q1', item1: 2666},
-        {y: '2011 Q2', item1: 2778},
-        {y: '2011 Q3', item1: 4912},
-        {y: '2011 Q4', item1: 3767},
-        {y: '2012 Q1', item1: 6810},
-        {y: '2012 Q2', item1: 5670},
-        {y: '2012 Q3', item1: 4820},
-        {y: '2012 Q4', item1: 15073},
-        {y: '2013 Q1', item1: 10687},
-        {y: '2013 Q2', item1: 8432}
-      ],
-      xkey: 'y',
-      ykeys: ['item1'],
-      labels: ['Item 1'],
-      lineColors: ['#3c8dbc'],
-      hideHover: 'auto'
-    });        
-        
+         
 
 
     var bar = new Morris.Bar({
@@ -486,14 +400,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
       hideHover: 'auto'
     });        
         
-    cargarVariables();		
-    document.getElementById("estadisticas").href = "estadisticas.html?token="+ token + "&usuario="+usuario;
-    document.getElementById("horario").href = "horariollegada.html?token="+ token + "&usuario="+usuario;
-    document.getElementById("logo").href = "index.html?token="+ token + "&usuario="+usuario;
+		cargarVariables();		
+        document.getElementById("estadisticas").href = "estadisticas.html?token="+ token + "&usuario="+usuario;
+        document.getElementById("horario").href = "horariollegada.html?token="+ token + "&usuario="+usuario;
+        document.getElementById("logo").href = "index.html?token="+ token + "&usuario="+usuario;
 
-    if(!token || !usuario){
-        location.href = "login.html";				
-    }else{
+		if(!token || !usuario){
+			location.href = "login.html";				
+		}else{
       $.ajax({
 		    type: "POST",
 		    dataType : "json",
@@ -526,9 +440,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
       url:'llamadasAjax.php',
       success: function (response) {
         datos = JSON.parse(response.mensaje);        
+        //ingresarInfo("nombreprincipal", datos[0].nombre + " "+ datos[0].apellido);
         ingresarInfo("nombreSuperior", datos[0].nombre);
         ingresarInfo("nombreMenu",  datos[0].nombre  + " "+ datos[0].apellido);
-        cargarSucursales(usuario, datos[0].tipo_usuario);
+        /*ingresarInfoFormulario("nombremodifica",  datos[0].nombre  + " "+ datos[0].apellido);
+        ingresarInfoFormulario("telefonomodifica",  datos[0].telefono);
+        ingresarInfoFormulario("celularmodifica",  datos[0].celular);
+        ingresarInfoFormulario("correomodifica",  datos[0].correo);
+        ingresarInfoFormulario("direccionmodifica",  datos[0].direccion);*/
       },
       error: function (error) {
         alert("mega fail 2");
@@ -538,19 +457,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		}
 	});
 
-    function cargarSucursales(idusuario, tipousuario){        
-        if(tipousuario == 1){
-            
-        }
-    }
-    
-    function ingresarInfo(elemento, html){
-        document.getElementById(elemento).innerHTML = html;
-    }
+  function ingresarInfo(elemento, html){
+     document.getElementById(elemento).innerHTML = html;
+  }
 
-    function ingresarInfoFormulario(elemento, html){
-        document.getElementById(elemento).value = html;
-    }
+  function ingresarInfoFormulario(elemento, html){
+     document.getElementById(elemento).value = html;
+  }
     
 
     function agregarCurso(nombre, clientes, tiempo, ventas, monto   , observacion) {
@@ -567,7 +480,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         $('#table-listado').bootstrapTable("load", cursos);
     }
     
-    function cerrarSesion(){
+  function cerrarSesion(){
 
     $.ajax({
     type: "POST",
