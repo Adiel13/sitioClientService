@@ -106,15 +106,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Optionally, you can add icons to the links -->
         <li><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
         <li  class="active"><a id="horario" href=""><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
-<<<<<<< HEAD
         <li><a href="#"><i class="fa fa-bell"></i> <span>Motivos de no compra</span></a></li>
 		<li><a href="#"><i class="fa fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
 		<li><a href="#"><i class="fa fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
-=======
-        <li><a href="#"><i class="fa-bell"></i> <span>Motivos de no compra</span></a></li>
-		<li><a href="#"><i class="fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
-		<li><a href="#"><i class="fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
->>>>>>> origin/master
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -143,6 +137,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
               <h3 class="box-title">Ver estadísticas por:</h3>
             </div>
             <div class="box-body">       
+                <div class="form-group">
+                <div class="form-group">
+                  <label>Sucursal:</label>
+                  <select id="sucursal" class="selectpicker">
+
+                  </select>
+                </div>
+                </div>
               <div class="form-group">
                 <label>Rango de fechas:</label>
 
@@ -212,14 +214,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <tr>
                   <th>Nombre</th>
                   <th># Clientes atendidos</th>
-                  <th>% Clientes atendidos</th>
-                  <th>Tiempo</th>
-                  <th>Tiempo (A)</th>
-                  <th>% de Tiempo</th>
-                  <th>Ventas</th>                    
-                  <th>% de Ventas</th>                                        
-                  <th>Monto Q.</th>                    
-                  <th>% de Monto</th>                    
+                  <th>% Clientes atendidos</th>                  
                 </tr>
                 </thead>
                 <tbody>
@@ -229,13 +224,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   <th>Nombre</th>
                   <th># Clientes atendidos</th>
                   <th>% Clientes atendidos</th>
-                  <th>Tiempo</th>
-                  <th>Tiempo (A)</th>
-                  <th>% de Tiempo</th>
-                  <th>Ventas</th>                    
-                  <th>% de Ventas</th>                                        
-                  <th>Monto Q.</th>                    
-                  <th>% de Monto</th> 
                 </tr>
                 </tfoot>
               </table>
@@ -360,7 +348,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 	var token;
 	var usuario;
-
+    var sucursales;
     
 	$(document).ready(function() {
         
@@ -414,7 +402,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 		if(!token || !usuario){
 			location.href = "login.html";				
 		}else{
-      $.ajax({
+            $.ajax({
 		    type: "POST",
 		    dataType : "json",
 		    data : {
@@ -423,8 +411,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
 			     tokensesion: token,
 			     sistemasesion: 1
 		  },
-      url:'llamadasAjax.php',
-      success: function (response) {
+            url:'llamadasAjax.php',
+            success: function (response) {
 			//alert(response.mensaje);
 			if(response.mensaje == 1){
 			}else{
@@ -446,21 +434,36 @@ scratch. This page gets rid of all links and provides the needed markup only.
       url:'llamadasAjax.php',
       success: function (response) {
         datos = JSON.parse(response.mensaje);        
-        //ingresarInfo("nombreprincipal", datos[0].nombre + " "+ datos[0].apellido);
         ingresarInfo("nombreSuperior", datos[0].nombre);
         ingresarInfo("nombreMenu",  datos[0].nombre  + " "+ datos[0].apellido);
-        /*ingresarInfoFormulario("nombremodifica",  datos[0].nombre  + " "+ datos[0].apellido);
-        ingresarInfoFormulario("telefonomodifica",  datos[0].telefono);
-        ingresarInfoFormulario("celularmodifica",  datos[0].celular);
-        ingresarInfoFormulario("correomodifica",  datos[0].correo);
-        ingresarInfoFormulario("direccionmodifica",  datos[0].direccion);*/
-      },
-      error: function (error) {
-        alert("mega fail 2");
-      },
-    });
+        },
+        error: function (error) {
+                alert("mega fail 2");
+            },
+        });
 
-		}
+      $.ajax({
+        type: "POST",
+        dataType : "json",
+        data : {
+           sucursales: 1,
+            tokensesion: token,
+        },
+        url:'llamadasAjax.php',
+        success: function (response) {
+        total = response.length;
+        for(i = 0; i <total; i++){
+            opcion = "<option value="+response[i].value+">"+response[i].name+"</value>";
+         $('#sucursal').append(opcion);
+        }
+        $('#sucursal').selectpicker('refresh');
+        },
+        error: function (error) {
+                alert("mega fail 3");
+            },
+        });
+		}            
+
 	});
 
   function ingresarInfo(elemento, html){
