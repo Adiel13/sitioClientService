@@ -485,7 +485,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
     }
     
     function cargarReporte(){
-        sucursal = $('#sucursal').val();        
+        sucursal = $('#sucursal').val();    
+        var mytable = $('#example1').DataTable();
+        mytable.clear();
+        mytable.draw();
         $.ajax({
         type: "POST",
         dataType : "json",
@@ -500,7 +503,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             var count = response.length;
             for(i = 0; i < count; i++){
                 total = (response[i].total/response[i].usuario) *100;
-                load(response[i].nombre, response[i].usuario, total);   
+                load(response[i].nombre, response[i].total, total);   
             }           
             
         },
@@ -522,7 +525,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         success: function (response) {
            count = response.length;
             for(i = 0; i < count; i++){
-                item = {y: response[i].y, a: response[i].a};
+                item = {y: response[i].y + " hrs", a: response[i].a};
                 arrData.push(item);    
             }
                 var bar = new Morris.Bar({
