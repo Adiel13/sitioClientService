@@ -22,6 +22,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="plugins/iCheck/all.css">
   <!-- Bootstrap Color Picker -->
   <link rel="stylesheet" href="plugins/colorpicker/bootstrap-colorpicker.min.css">
+  <link rel="stylesheet" href="plugins/morris/morris.css">
+
   <!-- Bootstrap time Picker -->
   <link rel="stylesheet" href="plugins/timepicker/bootstrap-timepicker.min.css">
   <!-- Select2 -->
@@ -106,15 +108,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Optionally, you can add icons to the links -->
         <li class="active"><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
         <li><a id="horario" href=""><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
-<<<<<<< HEAD
         <li><a href="#"><i class="fa fa-bell"></i> <span>Motivos de no compra</span></a></li>
 		<li><a href="#"><i class="fa fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
 		<li><a href="#"><i class="fa fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
-=======
-        <li><a href="#"><i class="fa-bell"></i> <span>Motivos de no compra</span></a></li>
-		<li><a href="#"><i class="fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
-		<li><a href="#"><i class="fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
->>>>>>> origin/master
       </ul>
         
       <!-- /.sidebar-menu -->
@@ -140,20 +136,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="row">
         <div class="col-md-6">
         <div class="box box-primary">
-                <div class="form-group">
-                  <label>Sucursal:</label>
-                  <select class="form-control">
-                    <option>option 1</option>
-                    <option>option 2</option>
-                    <option>option 3</option>
-                    <option>option 4</option>
-                    <option>option 5</option>
-                  </select>
-                </div>
             <div class="box-header">
               <h3 class="box-title">Ver estadísticas por:</h3>
             </div>
-            <div class="box-body">       
+            <div class="box-body">   
+                        <div class="form-group">
+                  <label>Sucursal:</label>
+                  <select id="sucursal" class="selectpicker" data-style="btn-info">
+                  </select>
+                </div>
               <div class="form-group">
                 <label>Rango de fechas:</label>
 
@@ -181,7 +172,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div>
               <!-- /.form group -->
               <div class="box-footer">
-                <button type="submit" class="btn btn-info pull-right">Crear reporte</button>
+                <button type="submit" class="btn btn-info pull-right" onclick="cargarReporte()">Crear reporte</button>
               </div>
             </div>
             <!-- /.box-body -->
@@ -408,157 +399,233 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>    
 
 <script>
-
-	var token;
+    var token;
 	var usuario;
-
+    var sucursales;    
+    var inicio;
+    var fin;
+    var sucursal;
     
-	$(document).ready(function() {
+	$(document).ready(function() {        
+        $('#reservation').daterangepicker(
+            {
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
+            },
+            function (start, end) {
+                inicio = start.format('YYYY-MM-DD');
+                fin = end.format('YYYY-MM-DD');   
+            }
+        );
+
+        $('#daterange-btn').daterangepicker(
+            {
+                ranges: {
+                    'Hoy': [moment(), moment()],
+                    'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                    'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
+                    'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
+                    'Este mes': [moment().startOf('month'), moment().endOf('month')],
+                    'Mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                startDate: moment().subtract(29, 'days'),
+                endDate: moment()
+            },
+            function (start, end) {
+                inicio = start.format('YYYY-MM-DD');
+                fin = end.format('YYYY-MM-DD');     
+                $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+        );
         
+        var donut = new Morris.Donut({
+            element: 'sales-chart',
+            resize: true,
+            colors: ["#3c8dbc", "#f56954", "#00a65a"],
+            data: [],
+            hideHover: 'auto'
+        });
 
-    $('#reservation').daterangepicker();
+        var line = new Morris.Line({
+            element: 'line-chart',
+            resize: true,
+            data: [],
+            xkey: 'y',
+            ykeys: ['item1'],
+            labels: ['Item 1'],
+            lineColors: ['#3c8dbc'],
+            hideHover: 'auto'
+        });        
 
-    $('#daterange-btn').daterangepicker(
-        {
-          ranges: {
-            'Hoy': [moment(), moment()],
-            'Ayer': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-            'Últimos 7 días': [moment().subtract(6, 'days'), moment()],
-            'Últimos 30 días': [moment().subtract(29, 'days'), moment()],
-            'Este mes': [moment().startOf('month'), moment().endOf('month')],
-            'Mes pasado': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-          },
-          startDate: moment().subtract(29, 'days'),
-          endDate: moment()
-        },
-        function (start, end) {
-          $('#daterange-btn span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-        }
-    );
+        var bar = new Morris.Bar({
+            element: 'bar-chart',
+            resize: true,
+            data: [],
+            barColors: ['#3c8dbc', '#f56954'],
+            xkey: 'y',
+            ykeys: ['a', 'b'],
+            labels: ['CPU', 'DISK'],
+            hideHover: 'auto'
+        });        
         
-    var donut = new Morris.Donut({
-      element: 'sales-chart',
-      resize: true,
-      colors: ["#3c8dbc", "#f56954", "#00a65a"],
-      data: [
-        {label: "Download Sales", value: 12},
-        {label: "In-Store Sales", value: 30},
-        {label: "Mail-Order Sales", value: 20}
-      ],
-      hideHover: 'auto'
-    });
-        
-
-    var line = new Morris.Line({
-      element: 'line-chart',
-      resize: true,
-      data: [
-        {y: '2011 Q1', item1: 2666},
-        {y: '2011 Q2', item1: 2778},
-        {y: '2011 Q3', item1: 4912},
-        {y: '2011 Q4', item1: 3767},
-        {y: '2012 Q1', item1: 6810},
-        {y: '2012 Q2', item1: 5670},
-        {y: '2012 Q3', item1: 4820},
-        {y: '2012 Q4', item1: 15073},
-        {y: '2013 Q1', item1: 10687},
-        {y: '2013 Q2', item1: 8432}
-      ],
-      xkey: 'y',
-      ykeys: ['item1'],
-      labels: ['Item 1'],
-      lineColors: ['#3c8dbc'],
-      hideHover: 'auto'
-    });        
-        
-
-
-    var bar = new Morris.Bar({
-      element: 'bar-chart',
-      resize: true,
-      data: [
-        {y: '2006', a: 100, b: 90},
-        {y: '2007', a: 75, b: 65},
-        {y: '2008', a: 50, b: 40},
-        {y: '2009', a: 75, b: 65},
-        {y: '2010', a: 50, b: 40},
-        {y: '2011', a: 75, b: 65},
-        {y: '2012', a: 100, b: 90}
-      ],
-      barColors: ['#00a65a', '#f56954'],
-      xkey: 'y',
-      ykeys: ['a', 'b'],
-      labels: ['CPU', 'DISK'],
-      hideHover: 'auto'
-    });        
-        
-<<<<<<< HEAD
-    cargarVariables();		
-    document.getElementById("estadisticas").href = "estadisticas.html?token="+ token + "&usuario="+usuario;
-    document.getElementById("horario").href = "horariollegada.html?token="+ token + "&usuario="+usuario;
-    document.getElementById("logo").href = "index.html?token="+ token + "&usuario="+usuario;
-
-    if(!token || !usuario){
-        location.href = "login.html";				
-    }else{
-=======
-		cargarVariables();		
+        cargarVariables();		
         document.getElementById("estadisticas").href = "estadisticas.html?token="+ token + "&usuario="+usuario;
         document.getElementById("horario").href = "horariollegada.html?token="+ token + "&usuario="+usuario;
         document.getElementById("logo").href = "index.html?token="+ token + "&usuario="+usuario;
 
-		if(!token || !usuario){
-			location.href = "login.html";				
-		}else{
->>>>>>> origin/master
-      $.ajax({
-		    type: "POST",
-		    dataType : "json",
-		    data : {
-			     verificarsesion: 1,
-			     usuariosesion: usuario, 
-			     tokensesion: token,
-			     sistemasesion: 1
-		  },
-      url:'llamadasAjax.php',
-      success: function (response) {
-			//alert(response.mensaje);
-			if(response.mensaje == 1){
-			}else{
-				location.href = "login.html";				
-			}
-        },
-        error: function (error) {
-			alert("mega fail");
-        },
-    });
-
-      $.ajax({
-        type: "POST",
-        dataType : "json",
-        data : {
-           datospersonales: 1,
-           usuariosesion: usuario
-      },
-      url:'llamadasAjax.php',
-      success: function (response) {
-        datos = JSON.parse(response.mensaje);        
-        ingresarInfo("nombreSuperior", datos[0].nombre);
-        ingresarInfo("nombreMenu",  datos[0].nombre  + " "+ datos[0].apellido);
-        cargarSucursales(usuario, datos[0].tipo_usuario);
-      },
-      error: function (error) {
-        alert("mega fail 2");
-      },
-    });
-
-		}
+        if(!token || !usuario){
+            location.href = "login.html";				
+        }else{
+            $.ajax({
+                type: "POST",
+                dataType : "json",
+                data : {
+                    verificarsesion: 1,
+                    usuariosesion: usuario, 
+                    tokensesion: token,
+                    sistemasesion: 1
+                },
+                url:'llamadasAjax.php',
+                success: function (response) {			
+                    if(response.mensaje == 1){
+                    }else{
+				        location.href = "login.html";				
+			         }
+                },
+                error: function (error) {			    
+                },
+            });
+            
+            $.ajax({
+                type: "POST",
+                dataType : "json",
+                data : {
+                    datospersonales: 1,
+                    usuariosesion: usuario
+                },
+                url:'llamadasAjax.php',
+                success: function (response) {
+                    datos = JSON.parse(response.mensaje);        
+                    ingresarInfo("nombreSuperior", datos[0].nombre);
+                    ingresarInfo("nombreMenu",  datos[0].nombre  + " "+ datos[0].apellido);
+                },
+                error: function (error) {},
+            });
+        }            
+        $.ajax({
+            type: "POST",
+            dataType : "json",
+            data : {
+                sucursales: 1,
+                tokensesion: token,
+            },
+            url:'llamadasAjax.php',
+            success: function (response) {
+                total = response.length;
+                for(i = 0; i <total; i++){
+                    opcion = "<option value="+response[i].value+">"+response[i].name+"</value>";
+                    $('#sucursal').append(opcion);
+                }
+            },
+            error: function (error) {},
+        });                                            
 	});
 
-    function cargarSucursales(idusuario, tipousuario){        
-        if(tipousuario == 1){
-            
-        }
+    function cargarReporte(){
+        sucursal = $('#sucursal').val();    
+        var mytable = $('#example1').DataTable();
+        mytable.clear();
+        mytable.draw();
+        arrData = [];
+        arrData2 = [];
+        arrData3 = [];
+        
+        $.ajax({
+            type: "POST",
+            dataType : "json",
+            data : {
+                graficoatencionvsventa: 1,
+                finicio: inicio, 
+                ffin: fin,
+                sucursal: sucursal
+            },
+            url:'llamadasAjax.php',
+                success: function (response) {
+                count = response.length;
+                for(i = 0; i < count; i++){
+                    item = {y: response[i].nombre,  a: response[i].clientes, b: response[i].venta};
+                    arrData.push(item);    
+                }
+                var bar = new Morris.Bar({
+                    element: 'bar-chart',
+                    resize: true,
+                    data: arrData,
+                    barColors: ['#3c8dbc', '#1C263A'],
+                    xkey: 'y',
+                    ykeys: ['a', 'b'],
+                    labels: ['Atencion', 'Ventas'],
+                    hideHover: 'auto'
+                    });        
+                },
+                error: function (error) {},
+        });
+        
+        $.ajax({
+            type: "POST",
+            dataType : "json",
+            data : {
+                obteneratendidos: 1,
+                finicio: inicio, 
+                ffin: fin,
+                sucursal: sucursal
+            },
+            url:'llamadasAjax.php',
+            success: function (response) {
+                count = response.length;
+                for(i = 0; i < count; i++){
+                    item = {label: response[i].nombre,  value: response[i].atendidos};
+                    arrData2.push(item);    
+                }
+                var donut = new Morris.Donut({
+                    element: 'sales-chart',
+                    resize: true,
+                    colors: ["#3c8dbc", "#f56954", "#00a65a"],
+                    data: arrData2,
+                    hideHover: 'auto'
+                });               
+            },
+            error: function (error) {},
+        });    
+
+        $.ajax({
+            type: "POST",
+            dataType : "json",
+            data : {
+                obtenertiempo: 1,
+                finicio: inicio, 
+                ffin: fin,
+                sucursal: sucursal
+            },
+            url:'llamadasAjax.php',
+            success: function (response) {
+                count = response.length;
+                for(i = 0; i < count; i++){
+                    item = {y: i,  item1: response[i].tiempoventa};
+                    arrData3.push(item);    
+                }
+                var line = new Morris.Line({
+                    element: 'line-chart',
+                    resize: true,
+                    data: arrData3,
+                    xkey: 'y',
+                    ykeys: ['item1'],
+                    labels: ['Item 1'],
+                    lineColors: ['#3c8dbc'],
+                    hideHover: 'auto'
+                });                 
+            },
+            error: function (error) {},
+        });           
     }
     
     function ingresarInfo(elemento, html){
@@ -567,60 +634,41 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     function ingresarInfoFormulario(elemento, html){
         document.getElementById(elemento).value = html;
-    }
-    
-
-    function agregarCurso(nombre, clientes, tiempo, ventas, monto   , observacion) {
-			var mydata = {
-				"no" : no,
-				"codigo" : codigo,
-				"curso" : nombre,
-				"creditos" : creditos,
-				"fecha" : fecha,
-				"nota" : nota,
-				"observaciones" : observacion
-			};
-			cursos.push(mydata);
-        $('#table-listado').bootstrapTable("load", cursos);
-    }
+    }    
     
     function cerrarSesion(){
-
-    $.ajax({
-    type: "POST",
-    dataType : "json",
-    data : {
-      cerrarSesion: 1,
-      usuariosesion: usuario, 
-      tokensesion: token,
-      sistemasesion: 1
-    },
-        url:'llamadasAjax.php',
-        success: function (response) {
-      //alert(response.mensaje);
-      if(response.mensaje == 1){
-      }else{
-        location.href = "login.html";       
-      }
-        },
-        error: function (error) {
-         // alert("mega fail");
-        },
-    });
-    location.href = "login.html";     
-  }
+        $.ajax({
+            type: "POST",
+            dataType : "json",
+            data : {
+                cerrarSesion: 1,
+                usuariosesion: usuario, 
+                tokensesion: token,
+                sistemasesion: 1
+            },
+            url:'llamadasAjax.php',
+            success: function (response) {      
+                if(response.mensaje == 1){
+                }else{
+                    location.href = "login.html";       
+                }
+            },
+                error: function (error) {},
+        });
+        location.href = "login.html";     
+    }
     
-      $(function () {
-    $("#example1").DataTable();
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false
+    $(function () {
+        $("#example1").DataTable();
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false
+        });
     });
-  });
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the

@@ -24,11 +24,12 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="" onclick="enviarInfo(index.html)"  class="logo">
+    <a id="logo" href="" onclick="enviarInfo(index.html)"  class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>CS</span>
+      <span class="logo-mini"><img class="profile-user-img img-responsive img-rounded" src="LOGO2.png" alt="User profile picture">
+      </span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>Client Service</span>
+      <span class="logo-lg"><b>Admin</b>Mónitor</span>
     </a>
 
     <!-- Header Navbar -->
@@ -47,6 +48,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
+              <img src="LOGO2.png" class="user-image" alt="User Image">
               <span class="hidden-xs" id="nombreSuperior"></span>
             </a>
             <ul class="dropdown-menu">
@@ -98,11 +100,11 @@
       <ul class="sidebar-menu">
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
-        <li><a href="#"><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
-        <li><a href="#"><i class="fa-bell"></i> <span>Motivos de no compra</span></a></li>
-		<li><a href="#"><i class="fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
-		<li><a href="#"><i class="fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
+        <li><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
+        <li><a id="horario" href=""><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
+        <li><a href="#"><i class="fa fa-bell"></i> <span>Motivos de no compra</span></a></li>
+		<li><a href="#"><i class="fa fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
+		<li><a href="#"><i class="fa fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -130,7 +132,7 @@
           <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-circle" src="../../dist/img/user4-128x128.jpg" alt="User profile picture">
+              <img class="profile-user-img img-responsive img-rounded" src="LOGO2.png" alt="User profile picture">
 
               <h3 class="profile-username text-center"><div id="nombreprincipal"></div></h3>
 
@@ -292,10 +294,7 @@
         </div>
         <!-- /.col -->
       </div>
-      <!-- /.row -->
-
     </section>
-    <!-- /.content -->
   </div>
   
 
@@ -408,52 +407,49 @@
 		if(!token || !usuario){
 			location.href = "login.html";				
 		}else{
-      $.ajax({
-		    type: "POST",
-		    dataType : "json",
-		    data : {
-			     verificarsesion: 1,
-			     usuariosesion: usuario, 
-			     tokensesion: token,
-			     sistemasesion: 1
-		  },
-      url:'llamadasAjax.php',
-      success: function (response) {
-			//alert(response.mensaje);
-			if(response.mensaje == 1){
-			}else{
-				location.href = "login.html";				
-			}
-        },
-        error: function (error) {
-        },
-    });
+            $.ajax({
+                type: "POST",
+                dataType : "json",
+                data : {
+			         verificarsesion: 1,
+			         usuariosesion: usuario, 
+			         tokensesion: token,
+			         sistemasesion: 1
+		          },
+                url:'llamadasAjax.php',
+                success: function (response) {
+                    if(response.mensaje == 1){
+			         }else{
+				        location.href = "login.html";				
+			         }
+                },
+                error: function (error) {
+                },
+            });
 
-      $.ajax({
-        type: "POST",
-        dataType : "json",
-        data : {
-           datospersonales: 1,
-           usuariosesion: usuario
-      },
-      url:'llamadasAjax.php',
-      success: function (response) {          
-        datos = JSON.parse(response.mensaje);        
-        ingresarInfo("nombreprincipal", datos[0].nombre + " "+ datos[0].apellido);
-        ingresarInfo("nombreSuperior", datos[0].nombre);
-        ingresarInfo("nombreMenu",  datos[0].nombre  + " "+ datos[0].apellido);
-        ingresarInfo("puesto",  datos[0].descripcion);
+            $.ajax({
+                type: "POST",
+                dataType : "json",
+                data : {
+                    datospersonales: 1,
+                    usuariosesion: usuario
+                },
+                url:'llamadasAjax.php',
+                success: function (response) {          
+                    datos = JSON.parse(response.mensaje);        
+                    ingresarInfo("nombreprincipal", datos[0].nombre + " "+ datos[0].apellido);
+                    ingresarInfo("nombreSuperior", datos[0].nombre);
+                    ingresarInfo("nombreMenu",  datos[0].nombre  + " "+ datos[0].apellido);
+                    ingresarInfo("puesto",  datos[0].descripcion);
 
-        ingresarInfoFormulario("nombremodifica",  datos[0].nombre  + " "+ datos[0].apellido);
-        ingresarInfoFormulario("telefonomodifica",  datos[0].telefono);
-        ingresarInfoFormulario("celularmodifica",  datos[0].celular);
-        ingresarInfoFormulario("correomodifica",  datos[0].correo);
-        ingresarInfoFormulario("direccionmodifica",  datos[0].direccion);
-
-      },
-      error: function (error) {
-      },
-    });
+                    ingresarInfoFormulario("nombremodifica",  datos[0].nombre  + " "+ datos[0].apellido);
+                    ingresarInfoFormulario("telefonomodifica",  datos[0].telefono);
+                    ingresarInfoFormulario("celularmodifica",  datos[0].celular);
+                    ingresarInfoFormulario("correomodifica",  datos[0].correo);
+                    ingresarInfoFormulario("direccionmodifica",  datos[0].direccion);
+                },
+                error: function (error) {},
+            });
 
 		}
 	});
@@ -477,23 +473,17 @@
       tokensesion: token,
       sistemasesion: 1
     },
-        url:'llamadasAjax.php',
-        success: function (response) {
-      //alert(response.mensaje);
-      if(response.mensaje == 1){
-      }else{
-        location.href = "login.html";       
-      }
-        },
-        error: function (error) {
-        },
+    url:'llamadasAjax.php',
+    success: function (response) {
+        if(response.mensaje == 1){
+        }else{
+            location.href = "login.html";       
+        }
+    },
+    error: function (error) {},
     });
     location.href = "login.html";     
   }
 </script>
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. Slimscroll is required when using the
-     fixed layout. -->
 </body>
 </html>
