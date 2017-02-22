@@ -41,8 +41,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     <!-- Logo -->
     <a id="logo" href="" class="logo">
-      <span class="logo-mini"><b>A</b>CS</span>
-      <span class="logo-lg"><b>Admin</b>Client Service</span>
+      <span class="logo-mini"><img class="profile-user-img img-responsive img-rounded" src="LOGO2.png" alt="User profile picture">
+        </span>
+      <span class="logo-lg"><b>Admin</b>Mónitor</span>
     </a>
 
     <!-- Header Navbar -->
@@ -55,6 +56,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="nav navbar-nav">
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <img src="LOGO2.png" class="user-image" alt="User Image">
               <span class="hidden-xs" id="nombreSuperior"></span>
             </a>
             <ul class="dropdown-menu">
@@ -106,10 +108,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
         <li><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
-        <li  class="active"><a id="horario" href=""><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
+        <li class="active"><a id="horario" href=""><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
         <li><a href="#"><i class="fa fa-bell"></i> <span>Motivos de no compra</span></a></li>
 		<li><a href="#"><i class="fa fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
-		<li><a href="#"><i class="fa fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
+		<li><a id="audios" href="#"><i class="fa fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
     </section>
@@ -141,7 +143,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <div class="form-group">
                 <div class="form-group">
                   <label>Sucursal:</label>
-                  <select id="sucursal" class="selectpicker" data-style="btn-info">
+                  <select id="sucursal" class="form-control select2" data-style="btn-info">
                   </select>
                 </div>
                 </div>
@@ -172,7 +174,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </div>
               <!-- /.form group -->
               <div class="box-footer">
-                <button type="submit" class="btn btn-info pull-right" onclick="cargarReporte()">Crear reporte</button>
+                <button type="submit" class="btn btn-primary pull-right" onclick="cargarReporte()">Crear reporte</button>
               </div>
             </div>
             <!-- /.box-body -->
@@ -211,14 +213,14 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <div class="box-body">
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
-                <tr>
+                <tr class="info">
                   <th>Nombre</th>
                   <th># Clientes atendidos</th>
                   <th>% Clientes atendidos</th>                  
                 </tr>
                 </thead>
                 <tfoot>
-                <tr>
+                <tr class="info">
                   <th>Nombre</th>
                   <th># Clientes atendidos</th>
                   <th>% Clientes atendidos</th>
@@ -337,7 +339,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <script src="general.js"></script>
 <script src="plugins/morris/morris.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-    
+<script src="plugins/select2/select2.full.min.js"></script>    
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 <script src="plugins/daterangepicker/daterangepicker.js"></script>
 <script src="plugins/datepicker/bootstrap-datepicker.js"></script>    
@@ -352,7 +354,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     var sucursal;
     
 	$(document).ready(function() {
-        
+    $(".select2").select2();
     $('#reservation').daterangepicker(
         {
           startDate: moment().subtract(29, 'days'),
@@ -401,6 +403,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         document.getElementById("estadisticas").href = "estadisticas.html?token="+ token + "&usuario="+usuario;
         document.getElementById("horario").href = "horariollegada.html?token="+ token + "&usuario="+usuario;
         document.getElementById("logo").href = "index.html?token="+ token + "&usuario="+usuario;
+        document.getElementById("audios").href = "audios.html?token="+ token + "&usuario="+usuario;
 
 		if(!token || !usuario){
 			location.href = "login.html";				
@@ -483,7 +486,7 @@ function load(nombre, clientes, total){
         var mytable = $('#example1').DataTable();
         mytable.row.add([nombre, clientes, total]);
         mytable.draw();              
-    }
+}
     
     function cargarReporte(){
         sucursal = $('#sucursal').val();    
@@ -526,7 +529,7 @@ function load(nombre, clientes, total){
         success: function (response) {
            count = response.length;
             for(i = 0; i < count; i++){
-                item = {y: response[i].y + " hrs", a: response[i].a};
+                item = {y: response[i].y + "h", a: response[i].a};
                 arrData.push(item);    
             }
                 var bar = new Morris.Bar({

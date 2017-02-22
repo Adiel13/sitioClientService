@@ -12,9 +12,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
+  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">  
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-
+  <link rel="stylesheet" href="plugins/select2/select2.min.css">
   <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
     <link href="css/bootstrap3_player.css" rel="stylesheet">
     
@@ -26,11 +26,12 @@
   <header class="main-header">
 
     <!-- Logo -->
-    <a href="" onclick="enviarInfo(index.html)"  class="logo">
+    <a id="logo" href="" onclick="enviarInfo(index.html)"  class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>CS</span>
+      <span class="logo-mini"><img class="profile-user-img img-responsive img-rounded" src="LOGO2.png" alt="User profile picture">
+        </span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>Admin</b>Client Service</span>
+      <span class="logo-lg"><b>Admin</b>Mónitor</span>
     </a>
 
     <!-- Header Navbar -->
@@ -49,6 +50,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
               <!-- hidden-xs hides the username on small devices so only the image appears. -->
+                <img src="LOGO2.png" class="user-image" alt="User Image">
               <span class="hidden-xs" id="nombreSuperior"></span>
             </a>
             <ul class="dropdown-menu">
@@ -103,7 +105,7 @@
         <li><a id="estadisticas" href=""><i class="fa fa-calculator"></i><span>Estadísticas de ventas</span></a></li>
         <li><a id="horario" href=""><i class="fa fa-calendar"></i> <span>Horario de llegada de clielntes</span></a></li>
         <li><a href="#"><i class="fa fa-bell"></i> <span>Motivos de no compra</span></a></li>
-		<li><a href="#"><i class="fa fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
+		<li><a id="audios" href="#"><i class="fa fa-bell"></i> <span>Acciones gerenciales tomadas</span></a></li>
 		<li class="active"><a id= "audio" href="#"><i class="fa fa-bell"></i> <span>Audio de atencion al cliente</span></a></li>
       </ul>
       <!-- /.sidebar-menu -->
@@ -125,17 +127,70 @@
 
     <!-- Main content -->
     <section class="content">
+      <div class="row">
+        <div class="col-md-6">
+        <div class="box box-primary">
+            <div class="box-body">       
+                <div class="form-group">
+                  <label>Sucursal:</label>
+                  <select id="sucursal" class="form-control select2" data-style="btn-info" onchange="cargarEmpleados()">
+                  </select>
+              <div class="box-footer">
 
-      <div class="row col-md-6 col-md-offset-3 col-xs-12">
+                    <button type="submit" class="btn btn-primary pull-right" onclick="cargarEmpleados()">Cargar empleados</button>
+                    </div>
+                  <label>Empleado:</label>                    
+                  <select id="empleado" class="form-control select2" data-style="btn-info">
+                  </select>
+                </div>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary pull-right" onclick="cargarAudios()">Cargar Audios</button>
+              </div>
+                
+            </div>
+          <div class="form-group">
+            <audio controls>          
+            <source src="../-1.wav" type="audio/wav" />
+                An html5-capable browser is required to play this audio. 
+            </audio>
+            </div>
+            <!-- /.box-body -->
+          </div>
+         
+          </div>
+         <div class="col-md-6">
+            <div class="box">
+            <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Ventas por vendedor</h3>
 
-        <audio controls>
-          <source src="http://www.w3schools.com/html/horse.ogg" type="audio/ogg" />
-          <source src="http://www.w3schools.com/html/horse.mp3" type="audio/mpeg" />
-          <a href="http://www.w3schools.com/html/horse.mp3">horse</a>
-          An html5-capable browser is required to play this audio. 
-        </audio>
-
-      </div>
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+              <table id="example1" class="table table-bordered table-striped">
+                <thead>
+                <tr class="info">
+                  <th>No. Venta</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>                  
+                </tr>
+                </thead>
+                <tfoot>
+                <tr class="info">
+                  <th>No. Venta</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>    
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+            </div>
+          </div>
+        </div>           
     </section>
   </div>
   
@@ -228,12 +283,13 @@
 <!-- ./wrapper -->
 
 <!-- REQUIRED JS SCRIPTS -->
-
+<script src="plugins/select2/select2.full.min.js"></script>
 <!-- jQuery 2.2.3 -->
 <script src="plugins/jQuery/jquery-2.2.3.min.js"></script>
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
-<!-- AdminLTE App -->
+<script src="plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
 <script src="dist/js/app.min.js"></script>
 <script src="general.js"></script>
 <script src="js/bootstrap3_player.js"></script>
@@ -246,7 +302,8 @@
         document.getElementById("estadisticas").href = "estadisticas.html?token="+ token + "&usuario="+usuario;
         document.getElementById("horario").href = "horariollegada.html?token="+ token + "&usuario="+usuario;
         document.getElementById("logo").href = "index.html?token="+ token + "&usuario="+usuario;
-        
+        document.getElementById("audios").href = "audios.html?token="+ token + "&usuario="+usuario;
+
 		if(!token || !usuario){
 			location.href = "login.html";				
 		}else{
@@ -281,22 +338,33 @@
       url:'llamadasAjax.php',
       success: function (response) {          
         datos = JSON.parse(response.mensaje);        
-        ingresarInfo("nombreprincipal", datos[0].nombre + " "+ datos[0].apellido);
         ingresarInfo("nombreSuperior", datos[0].nombre);
         ingresarInfo("nombreMenu",  datos[0].nombre  + " "+ datos[0].apellido);
-        ingresarInfo("puesto",  datos[0].descripcion);
-
-        ingresarInfoFormulario("nombremodifica",  datos[0].nombre  + " "+ datos[0].apellido);
-        ingresarInfoFormulario("telefonomodifica",  datos[0].telefono);
-        ingresarInfoFormulario("celularmodifica",  datos[0].celular);
-        ingresarInfoFormulario("correomodifica",  datos[0].correo);
-        ingresarInfoFormulario("direccionmodifica",  datos[0].direccion);
 
       },
       error: function (error) {
       },
     });
-
+            
+      $.ajax({
+        type: "POST",
+        dataType : "json",
+        data : {
+           sucursales: 1,
+            tokensesion: token,
+        },
+        url:'llamadasAjax.php',
+        success: function (response) {
+        total = response.length;
+        for(i = 0; i <total; i++){
+            opcion = "<option value="+response[i].value+">"+response[i].name+"</value>";
+         $('#sucursal').append(opcion);
+        }
+        },
+        error: function (error) {
+                alert("mega fail 3");
+            },
+        });
 		}
 	});
 
@@ -332,6 +400,62 @@
     });
     location.href = "login.html";     
   }
+    
+    function cargarEmpleados(){
+        var sucu = $('#sucursal').val();    
+        $.ajax({
+        type: "POST",
+        dataType : "json",
+        data : {
+           obtenerVendedores: 1,
+            sucursal: sucu
+        },
+        url:'llamadasAjax.php',
+        success: function (response) {
+        total = response.length;
+        for(i = 0; i <total; i++){
+            opcion = "<option value="+response[i].id_empleado+">"+response[i].nombre+"</value>";
+         $('#empleado').append(opcion);
+        }
+        },
+        error: function (error) {
+                alert("mega fail 3");
+            },
+        });    
+    }
+    
+    function load(venta, fecha, estado){            
+        var mytable = $('#example1').DataTable();
+        mytable.row.add([venta, fecha, estado]);
+        mytable.draw();              
+    }
+    function cargarAudios(){
+        var empleado = $('#empleado').val();    
+        var mytable = $('#example1').DataTable();
+        mytable.clear();
+        mytable.draw();
+        $.ajax({
+        type: "POST",
+        dataType : "json",
+        data : {
+            obtenerVentas: 1,
+            empleado: empleado
+        },
+        url:'llamadasAjax.php',
+        success: function (response) {
+            var count = response.length;
+            for(i = 0; i < count; i++){                
+                load(response[i].id_venta, response[i].inicio_venta, response[i].descripcion);   
+            }           
+            
+        },
+            error: function (error) {},
+        }); 
+    }
+    
+      $(function () {
+    $("#example1").DataTable();
+  });
 </script>
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
