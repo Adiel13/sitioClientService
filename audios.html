@@ -12,7 +12,9 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <link rel="stylesheet" href="plugins/datatables/dataTables.bootstrap.css">  
+  <link rel="stylesheet" href="plugins/datatables/jquery.dataTables.css">  
+    <link rel="stylesheet" type="text/css" href="plugins/datatables/extensions/TableTools/css/dataTables.tableTools.css">
+
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="plugins/select2/select2.min.css">
   <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
@@ -149,9 +151,10 @@
                 
             </div>
           <div class="form-group">
-            <audio controls>          
-            <source src="../-1.wav" type="audio/wav" />
-                An html5-capable browser is required to play this audio. 
+            <audio id="player" controls="controls">
+              <source id="sourceOgg" src="" type="audio/ogg" />
+              <source id="sourceMp3" src="" type="audio/wav" />
+              Your browser does not support the audio element.
             </audio>
             </div>
             <!-- /.box-body -->
@@ -169,7 +172,7 @@
                 </button>
                 <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
               </div>
-              <table id="example1" class="table table-bordered table-striped">
+              <table id="example1" class="display">
                 <thead>
                 <tr class="info">
                   <th>No. Venta</th>
@@ -289,7 +292,7 @@
 <!-- Bootstrap 3.3.6 -->
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="plugins/datatables/dataTables.bootstrap.min.js"></script>
+<script type="text/javascript" language="javascript" src="plugins/datatables/extensions/TableTools/js/dataTables.tableTools.js"></script>
 <script src="dist/js/app.min.js"></script>
 <script src="general.js"></script>
 <script src="js/bootstrap3_player.js"></script>
@@ -454,13 +457,32 @@
     }
     
       $(function () {
-    $("#example1").DataTable();
-  });
-</script>
-<!-- Optionally, you can add Slimscroll and FastClick plugins.
-     Both of these plugins are recommended to enhance the
-     user experience. Slimscroll is required when using the
-     fixed layout. -->
+
+    $('#example1').DataTable( );
     
+    var table = $('#example1').DataTable();
+
+    $('#example1 tbody').on( 'click', 'tr', function () {
+        var rows= table.row( this ).data();                
+        
+        var player=document.getElementById('player');
+        var sourceOgg=document.getElementById('player');
+        var sourceMp3=document.getElementById('player');
+        sourceMp3.src="../"+rows[0]+".wav";
+
+           player.load();
+           player.play(); 
+                
+        if ( $(this).hasClass('selected') ) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    } );
+          
+  });
+</script>    
 </body>
 </html>
