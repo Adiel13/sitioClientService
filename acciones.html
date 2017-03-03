@@ -3,19 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Admin Mónitor | Inicio</title>
+  <title>Admin Mónitor | Acciones Gerenciales</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.6 -->
   <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-  <!-- Ionicons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
-
+<link rel="stylesheet" href="dist/css/AdminLTE.min.css">    
   <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
+  <link rel="stylesheet" href="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css">
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
@@ -129,166 +125,56 @@
       <div class="row">
         <div class="col-md-3">
 
-          <!-- Profile Image -->
           <div class="box box-primary">
-            <div class="box-body box-profile">
-              <img class="profile-user-img img-responsive img-rounded" src="LOGO2.png" alt="User profile picture">
-              <h3 class="profile-username text-center"><div id="nombreprincipal"></div></h3>
-                <p class="text-muted text-center"><div id="puesto"></div></p>
-              <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <b>No. Sucursales</b> <a class="pull-right">1,322</a>
-                </li>
-                <li class="list-group-item">
-                  <b>No. Empleados</b> <a class="pull-right">543</a>
-                </li>
-              </ul>
+            <div class="box-body">       
+                <div class="form-group">
+                  <label>Sucursal:</label>
+                  <select id="sucursal" class="form-control select2" data-style="btn-info" onchange="cargarEmpleados()">
+                  </select>
+              <div class="box-footer">
+
+                    <button type="submit" class="btn btn-primary pull-right" onclick="cargarEmpleados()">Cargar empleados</button>
+                    </div>
+                  <label>Empleado:</label>                    
+                  <select id="empleado" class="form-control select2" data-style="btn-info">
+                  </select>
+                </div>
+              <div class="box-footer">
+                <button type="submit" class="btn btn-primary pull-right" onclick="cargarAudios()">Cargar Audios</button>
+              </div>
+                
             </div>
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
 
         </div>
         <!-- /.col -->
         <div class="col-md-9">
-          <div class="nav-tabs-custom">
-            <ul class="nav nav-tabs">
-              <li class="active"><a href="#settings" data-toggle="tab">Datos</a></li>
-              <li><a href="#timeline" data-toggle="tab">Historial de Sesión</a></li>
-              
-            </ul>
-            <div class="tab-content">
-              <!-- /.tab-pane -->
-              <div class="tab-pane" id="timeline">
-                <!-- The timeline -->
-                <ul class="timeline timeline-inverse">
-                  <!-- timeline time label -->
-                  <li class="time-label">
-                        <span class="bg-red">
-                          10 Feb. 2014
-                        </span>
-                  </li>
-                  <!-- /.timeline-label -->
-                  <!-- timeline item -->
-                  <li>
-                      <i class="fa fa-user bg-aqua"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-
-                      <h3 class="timeline-header no-border"><a href="#">Nombre</a> Inicio de sesión
-                      </h3>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-user bg-aqua"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-
-                      <h3 class="timeline-header no-border"><a href="#">Nombre</a> Inicio de sesión
-                      </h3>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-user bg-red"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-
-                      <h3 class="timeline-header no-border"><a href="#">Nombre</a> Cierre de sesión
-                      </h3>
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <!-- timeline time label -->
-                  <li class="time-label">
-                        <span class="bg-green">
-                          3 Jan. 2014
-                        </span>
-                  </li>
-                  <!-- /.timeline-label -->
-                  <!-- timeline item -->
-                  <li>
-                    <i class="fa fa-user bg-aqua"></i>
-
-                    <div class="timeline-item">
-                      <span class="time"><i class="fa fa-clock-o"></i> 5 mins ago</span>
-					  <h3 class="timeline-header no-border"><a href="#">Nombre</a> Inicio de sesión
-                    </div>
-                  </li>
-                  <!-- END timeline item -->
-                  <li>
-                    <i class="fa fa-clock-o bg-gray"></i>
-                  </li>
-                </ul>
+            <div class="box box-primary">
+          <div class="box box-info">
+            <div class="box-header">
+              <h3 class="box-title">Ingrese la nota
+              </h3>
+              <!-- tools box -->
+              <div class="pull-right box-tools">
+                <button type="button" class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                  <i class="fa fa-minus"></i></button>
+                <button type="button" class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove">
+                  <i class="fa fa-times"></i></button>
               </div>
-              <!-- /.tab-pane -->
-
-              <div class="active tab-pane" id="settings">
-                <form class="form-horizontal">
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Nombre</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="nombremodifica" placeholder="Nombre" disabled>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputEmail" class="col-sm-2 control-label">Correo</label>
-
-                    <div class="col-sm-10">
-                      <input type="email" class="form-control" id="correomodifica" placeholder="Correo">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="inputName" class="col-sm-2 control-label">Dirección</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="direccionmodifica" placeholder="Dirección">
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label for="inputSkills" class="col-sm-2 control-label">Teléfono</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="telefonomodifica" placeholder="Teléfono">
-                    </div>
-                  </div>
-				  <div class="form-group">
-                    <label for="inputSkills" class="col-sm-2 control-label">Celular</label>
-
-                    <div class="col-sm-10">
-                      <input type="text" class="form-control" id="celularmodifica" placeholder="Celular">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <div class="checkbox">
-                        <label>
-                          <input type="checkbox"> Quiero modificar mis datos
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                      <button type="Modificar" class="btn btn-danger">Modificar</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-              <!-- /.tab-pane -->
+              <!-- /. tools -->
             </div>
-            <!-- /.tab-content -->
+            <!-- /.box-header -->
+            <div class="box-body pad">
+              <form>
+                    <textarea id="editor1" name="editor1" rows="10" cols="80">
+                                            ...
+                    </textarea>
+              </form>
+            </div>
           </div>
-          <!-- /.nav-tabs-custom -->
-        </div>
+          <!-- /.box 
+            </div>
+      </div>
         <!-- /.col -->
       </div>
     </section>
@@ -390,6 +276,9 @@
 <script src="bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.min.js"></script>
+<script src="dist/js/demo.js"></script>
+<script src="https://cdn.ckeditor.com/4.5.7/standard/ckeditor.js"></script>
+<script src="plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js"></script>
 <script src="general.js"></script>
 <script>
 
@@ -435,21 +324,37 @@
                 url:'llamadasAjax.php',
                 success: function (response) {          
                     datos = JSON.parse(response.mensaje);        
-                    ingresarInfo("nombreprincipal", datos[0].nombre + " "+ datos[0].apellido);
                     ingresarInfo("nombreSuperior", datos[0].nombre);
                     ingresarInfo("nombreMenu",  datos[0].nombre  + " "+ datos[0].apellido);
-                    ingresarInfo("puesto",  datos[0].descripcion);
 
-                    ingresarInfoFormulario("nombremodifica",  datos[0].nombre  + " "+ datos[0].apellido);
-                    ingresarInfoFormulario("telefonomodifica",  datos[0].telefono);
-                    ingresarInfoFormulario("celularmodifica",  datos[0].celular);
-                    ingresarInfoFormulario("correomodifica",  datos[0].correo);
-                    ingresarInfoFormulario("direccionmodifica",  datos[0].direccion);
                 },
                 error: function (error) {},
             });
 
+            
+          $.ajax({
+            type: "POST",
+            dataType : "json",
+            data : {
+               sucursales: 1,
+                tokensesion: token,
+            },
+            url:'llamadasAjax.php',
+            success: function (response) {
+            total = response.length;
+            for(i = 0; i <total; i++){
+                opcion = "<option value="+response[i].value+">"+response[i].name+"</value>";
+             $('#sucursal').append(opcion);
+            }
+            },
+            error: function (error) {
+                    alert("mega fail 3");
+                },
+            });
 		}
+            CKEDITOR.replace('editor1');
+    //bootstrap WYSIHTML5 - text editor
+    $(".textarea").wysihtml5();
 	});
 
   function ingresarInfo(elemento, html){
@@ -482,6 +387,29 @@
     });
     location.href = "login.html";     
   }
+    
+    function cargarEmpleados(){
+        var sucu = $('#sucursal').val();    
+        $.ajax({
+        type: "POST",
+        dataType : "json",
+        data : {
+           obtenerVendedores: 1,
+            sucursal: sucu
+        },
+        url:'llamadasAjax.php',
+        success: function (response) {
+        total = response.length;
+        for(i = 0; i <total; i++){
+            opcion = "<option value="+response[i].id_empleado+">"+response[i].nombre+"</value>";
+         $('#empleado').append(opcion);
+        }
+        },
+        error: function (error) {
+                alert("mega fail 3");
+            },
+        });    
+    }
 </script>
 </body>
 </html>
