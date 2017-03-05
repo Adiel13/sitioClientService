@@ -131,18 +131,13 @@
                   <label>Sucursal:</label>
                   <select id="sucursal" class="form-control select2" data-style="btn-info" onchange="cargarEmpleados()">
                   </select>
-              <div class="box-footer">
-
+                    <div class="box-footer">
                     <button type="submit" class="btn btn-primary pull-right" onclick="cargarEmpleados()">Cargar empleados</button>
                     </div>
                   <label>Empleado:</label>                    
                   <select id="empleado" class="form-control select2" data-style="btn-info">
                   </select>
                 </div>
-              <div class="box-footer">
-                <button type="submit" class="btn btn-primary pull-right" onclick="cargarAudios()">Cargar Audios</button>
-              </div>
-                
             </div>
           </div>
 
@@ -155,6 +150,11 @@
               <h3 class="box-title">Ingrese la nota
               </h3>
               <!-- tools box -->
+                <br>
+                <br>
+              <label>Tipo de nota:</label>
+              <select id="tipo" class="form-control select2" data-style="btn-info">
+              </select>
               <div class="pull-right box-tools">
                 <button type="button" class="btn btn-info btn-sm" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                   <i class="fa fa-minus"></i></button>
@@ -171,6 +171,9 @@
                     </textarea>
               </form>
             </div>
+            <div class="box-footer">
+            <button type="submit" class="btn btn-primary pull-right" onclick="enviarNota()">Enviar Nota</button>
+            </div>              
           </div>
           <!-- /.box 
             </div>
@@ -351,6 +354,25 @@
                     alert("mega fail 3");
                 },
             });
+            
+          $.ajax({
+            type: "POST",
+            dataType : "json",
+            data : {
+                obtenerTipoAcciones: 1
+            },
+            url:'llamadasAjax.php',
+            success: function (response) {
+            total = response.length;
+            for(i = 0; i <total; i++){
+                opcion = "<option value="+response[i].id_tipo+">"+response[i].descripcion+"</value>";
+             $('#tipo').append(opcion);
+            }
+            },
+            error: function (error) {
+                    alert("mega fail 3");
+                },
+            });            
 		}
             CKEDITOR.replace('editor1');
     //bootstrap WYSIHTML5 - text editor
@@ -409,6 +431,32 @@
                 alert("mega fail 3");
             },
         });    
+    }
+    
+    function enviarNota(){
+        var sucu = $('#sucursal').val();   
+        var empleado = $('#empleado').val();
+        var tipo = $('#tipo').val();
+        var texto = $('#editor1').val();
+        
+        $.ajax({
+        type: "POST",
+        dataType : "json",
+        data : {
+           ingresarNota: 1,
+            tokensesion: token,
+            tipo: tipo,
+            mensaje: texto,
+            vendedor: empleado
+        },
+        url:'llamadasAjax.php',
+        success: function (response) {
+            alert("se fueeee");
+        },
+        error: function (error) {
+                alert("mega fail 3");
+            },
+        });  
     }
 </script>
 </body>
