@@ -137,6 +137,9 @@
                   <label>Empleado:</label>                    
                   <select id="empleado" class="form-control select2" data-style="btn-info">
                   </select>
+                    <div class="box-footer">
+                    <button type="submit" class="btn btn-primary pull-right" onclick="cargarAcciones()">Cargar Acciones</button>
+                    </div>
                 </div>
             </div>
           </div>
@@ -167,7 +170,7 @@
             <div class="box-body pad">
               <form>
                     <textarea id="editor1" name="editor1" rows="10" cols="80">
-                                            ...
+                                            
                     </textarea>
               </form>
             </div>
@@ -177,9 +180,22 @@
           </div>
           <!-- /.box 
             </div>
-      </div>
+      
         <!-- /.col -->
       </div>
+          </div>  
+    </div>
+              <div class="row">
+        <div class="col-md-12">
+
+          <div class="box box-primary">
+            <div class="box-body">       
+                <div id="contenedor"></div>
+            </div>
+          </div>
+
+        </div>
+    </div>     
     </section>
   </div>
   
@@ -193,7 +209,8 @@
   </footer>
 
   <!-- Control Sidebar -->
-  <aside class="control-sidebar control-sidebar-dark">
+  
+    <aside class="control-sidebar control-sidebar-dark">
     <!-- Create the tabs -->
     <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
       <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
@@ -375,9 +392,8 @@
                 },
             });            
 		}
-            CKEDITOR.replace('editor1');
-    //bootstrap WYSIHTML5 - text editor
-    $(".textarea").wysihtml5();
+        CKEDITOR.replace('editor1');
+        $(".textarea").wysihtml5();
 	});
 
   function ingresarInfo(elemento, html){
@@ -438,8 +454,8 @@
         var sucu = $('#sucursal').val();   
         var empleado = $('#empleado').val();
         var tipo = $('#tipo').val();
-        var texto = $('#editor1').val();
-        
+        var texto = CKEDITOR.instances.editor1.getData();
+
         $.ajax({
         type: "POST",
         dataType : "json",
@@ -452,12 +468,36 @@
         },
         url:'llamadasAjax.php',
         success: function (response) {
-            alert("se fueeee");
         },
         error: function (error) {
                 alert("mega fail 3");
             },
         });  
+    }
+    
+    function cargarAcciones(){
+        var empleado = $('#empleado').val();
+        $.ajax({
+        type: "POST",
+        dataType : "json",
+        data : {           
+            cargarAcciones: 1,
+            vendedor: empleado
+        },
+        url:'llamadasAjax.php',
+        success: function (response) {
+            var total = response.length;
+            var html = '<ul class="list-group">';            
+            for(i = 0; i <total; i++){
+                html += '<li class="list-group-item">'+response[i].mensaje+"</li>";                
+            }
+            html += "</ul>"
+            document.getElementById("contenedor").innerHTML = html;
+        },
+        error: function (error) {
+                alert("mega fail 3");
+            },
+        }); 
     }
 </script>
 </body>
